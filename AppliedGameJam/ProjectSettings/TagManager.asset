@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Planet
+  - Continent
+  - Woods
+  - Ice
+  - Desert
+  - Tree
+  - ThinkingCloud
+  - Mushroom1
+  - Inhabitant
+  - GatherWood
+  - Bush
+  - GatherBush
+  - MushCap
+  - World Space
+  - Space
+  - House1
+  - Seed
+  - Solarflower
+  - Farm
+  - House2
+  - Factory
+  - Windmill
+  - House3
+  - Meteor
+  - UI
+  - TownHall
+  - Mine
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Continent
+  - Planet
+  - Tree
+  - Selectable
+  - Food
+  - 
+  - ColliderWall
+  - Inhabitant
+  - WorldSpaceUI
+  - Farm
+  - Factory
+  - House
+  - HouseTier2
+  - HouseTier3
+  - Space
+  - TownHall
+  - Mine
+  - WindMill
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
