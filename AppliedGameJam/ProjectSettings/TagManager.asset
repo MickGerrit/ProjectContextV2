@@ -31,6 +31,8 @@ TagManager:
   - UI
   - TownHall
   - Mine
+  - tutWelcome
+  - tutObjective
   layers:
   - Default
   - TransparentFX
