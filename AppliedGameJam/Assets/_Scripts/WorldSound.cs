@@ -12,15 +12,17 @@ public class WorldSound : ObjectSelecter {
     public AudioClip[] clickClip;
     public AudioClip[] waterClip;
     public AudioClip[] starsClip;
+    public AudioClip[] mumbleClip;
 
     public LayerMask waterLayerMask;
     public LayerMask starsLayerMask;
-    
+
+    public PlanetRotationControls planetRotationControls;
+    public bool clickedButton;
 
     // Use this for initialization
     void Start() {
         audioSource = GetComponent<AudioSource>();
-
     }
 
     private void FixedUpdate() {
@@ -42,20 +44,39 @@ public class WorldSound : ObjectSelecter {
             clickedGameObject = null;
 
         }
-    }
 
-    void CheckLayerThenPlayAudio() {
-        if (((1 << clickedGameObject.gameObject.layer) & waterLayerMask) != 0) {
-            PlayAudio(waterClip);
-        } else if (clickedGameObject.gameObject.tag == "Space") {
-            PlayAudio(starsClip);
-        } else {
-            PlayAudio(clickClip);
+        if (!audioSource.isPlaying) {
+            clickedButton = false;
         }
     }
 
-    void PlayAudio(AudioClip[] audioClip) {
-        audioSource.pitch = Random.Range(lowRandomPitch, highRandomPitch);
+    void CheckLayerThenPlayAudio() {
+        if (!clickedButton) {
+
+            if (((1 << clickedGameObject.gameObject.layer) & waterLayerMask) != 0) {
+                PlayAudio(waterClip);
+            } else if (clickedGameObject.gameObject.tag == "Space") {
+                PlayAudio(starsClip);
+            } else if (clickedGameObject.gameObject.tag == "Inhabitant") {
+                PlayAudio(mumbleClip);
+            } else {
+                PlayAudio(clickClip);
+            }
+        }
+    }
+
+    public void ClickSound() {
+        PlayAudio(clickClip);
+        audioSource.pitch = Random.Range(0.9f, 1f);
+        clickedButton = true;
+    }
+
+    public void PlayAudio(AudioClip[] audioClip) {
+        if (clickedGameObject.gameObject.tag == "Inhabitant") {
+            audioSource.pitch = Random.Range(1, 1.3f);
+        } else {
+            audioSource.pitch = Random.Range(lowRandomPitch, highRandomPitch);
+        }
         audioSource.clip = audioClip[Random.Range(0, audioClip.Length)];
         audioSource.Play();
     }

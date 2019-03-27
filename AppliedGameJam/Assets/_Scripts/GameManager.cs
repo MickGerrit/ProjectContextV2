@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour {
 
     //Reference
     private Trees treeList;
-    private Stats stats;
+    public Stats stats;
     private TurnSystem turnSystem;
     public Text turnCountText;
     public Text maxTurnText;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour {
     private bool doOnce2;
     
     [SerializeField]
-    private float co2Force;
+    public float co2Force;
     public float gameTurnDuration;
     public float gemsEarned = 0f;
 
@@ -180,7 +180,7 @@ public class GameManager : MonoBehaviour {
                 assignedpopulation.Remove(inhabitant);
                 population.Add(inhabitant);
             }
-            house1.Remove(DestroyHouse);
+            house2.Remove(DestroyHouse);
             uiPositioner.ExitWindow();
             Destroy(DestroyHouse);
         }

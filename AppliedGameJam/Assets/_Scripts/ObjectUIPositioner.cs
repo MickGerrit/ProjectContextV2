@@ -51,16 +51,19 @@ public class ObjectUIPositioner : ObjectSelecter {
         //Check for those ui elements
         blockOtherRayCasts = IsSelectingAGameObjectInList(uiGameObjectsToBlockClicks);
 
-        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)) && isSelecting)
+        if ((Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)) && isSelecting) {
+            hoverCanvas.GetComponent<HoverToGetStats>().currentHoveringTime = 0;
             ExitWindow();
+        }
 
         if (isSelecting && hitObject != null) {
             buildingCanvas.SetActive(true);
-            buildingCanvas.SetActive(true);
+            hoverCanvas.GetComponent<Animator>().SetBool("clicked", true);
             this.transform.position = new Vector3(hitObject.transform.position.x + offsetX, hitObject.transform.position.y + offsetY, zPosition);
             this.transform.LookAt(playerCamLoc);
         }
         if (!isSelecting || blockOtherRayCasts) {
+            hoverCanvas.GetComponent<Animator>().SetBool("clicked", false);
             hitObject = null;
             buildingCanvas.SetActive(false);
         }
@@ -77,6 +80,8 @@ public class ObjectUIPositioner : ObjectSelecter {
                 if (hit.transform.gameObject.tag == deselectTag) {
                     isSelecting = false;
                 }
+                hoverCanvas.GetComponent<Animator>().SetBool("clicked", true);
+
                 hitObject = hit.transform.gameObject;
                 planetRotationControls.rotX = 0;
                 planetRotationControls.rotY = 0;
