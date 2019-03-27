@@ -72,7 +72,7 @@ public class WorldSound : ObjectSelecter {
     }
 
     public void PlayAudio(AudioClip[] audioClip) {
-        if (clickedGameObject.gameObject.tag == "Inhabitant") {
+        if (clickedGameObject != null && clickedGameObject.gameObject.tag == "Inhabitant") {
             audioSource.pitch = Random.Range(1, 1.3f);
         } else {
             audioSource.pitch = Random.Range(lowRandomPitch, highRandomPitch);

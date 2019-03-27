@@ -5,7 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_Scenes/myPlanet(MasterV2.1).unity
     guid: 2d80978456f6d544fa77c3a9214b1470
+  - enabled: 1
+    path: Assets/_Scenes/myPlanet(MasterV2.3) Mick.unity
+    guid: e7322926f1fbb5b478985b7393eac3e7
   m_configObjects: {}
