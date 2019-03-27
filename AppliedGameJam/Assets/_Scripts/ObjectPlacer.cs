@@ -15,7 +15,7 @@ public class ObjectPlacer : ObjectSelecter {
 
     private GameManager gameManager;
     private Stats stats;
-    GameObject instantiatedPrefab;
+    public GameObject instantiatedPrefab;
     private float randomYRotation;
     //Declare
     private bool doOnce;
@@ -28,6 +28,7 @@ public class ObjectPlacer : ObjectSelecter {
     private ObjectsInRangeChecker objectsInrangeChecker;
     public List<GameObject> townHalls;
     public bool townHallInRange;
+    private Occupance currentOccupanceReference;
 
     private void Start() {
         townHallInRange = false;
@@ -48,10 +49,19 @@ public class ObjectPlacer : ObjectSelecter {
         if (instantiatedPrefab != null) {
             townHalls = objectsInrangeChecker.GetObjectsInRange(instantiatedPrefab.transform.position, objectsInrangeChecker.radius-2f, "TownHall");
         }
-        
+        if (instantiatedPrefab != null) {
+            if (instantiatedPrefab.GetComponent<Occupance>() != null) {
+                currentOccupanceReference = instantiatedPrefab.GetComponent<Occupance>();
+            } else {
+                currentOccupanceReference = instantiatedPrefab.GetComponentInChildren<Occupance>();
+            }
+        }
 
-        if (Input.GetButtonUp("Fire1") && !isUsingButton && !canInstantiateObject && hitPlanet && townHalls.Count > 0) { // when placed inside a town hall radius
+        if (Input.GetButtonUp("Fire1") && !isUsingButton && !canInstantiateObject && hitPlanet && townHalls.Count > 0 && !currentOccupanceReference.isOverlapping) { // when placed inside a town hall radius
             Debug.Log("Placed");
+            instantiatedPrefab.transform.Find("OnBuild").gameObject.SetActive(true);
+            instantiatedPrefab.transform.Find("OnBuild").gameObject.GetComponent<AudioSource>().pitch = Random.Range(0.8f, 1.1f);
+            instantiatedPrefab.transform.Find("OnBuild").gameObject.GetComponent<AudioSource>().Play();
             if (instantiatedPrefab.tag == "Windmill")
                 instantiatedPrefab.GetComponent<Windmill>().OnAwake();
             else if (instantiatedPrefab.tag == "Seed")
@@ -70,15 +80,21 @@ public class ObjectPlacer : ObjectSelecter {
                 instantiatedPrefab.GetComponent<Solarflower>().OnAwake();
             else if (instantiatedPrefab.tag == "TownHall") {
                 if ((townHalls.Count > 1) || gameManager.townhall.Count == 0) { //an exception for the first townhall placed and because it needs to ignore its own townhall
+                    instantiatedPrefab.GetComponentInChildren<MeshCollider>().isTrigger = false;
+                    Destroy(instantiatedPrefab.GetComponentInChildren<Rigidbody>());
                     instantiatedPrefab.GetComponent<TownHall>().OnAwake();
                 } else {
                     Destroy(instantiatedPrefab);
                     instantiatedPrefab = null;
                 }
             }
+            instantiatedPrefab.GetComponentInChildren<MeshCollider>().isTrigger = false;
+            Destroy(instantiatedPrefab.GetComponentInChildren<Rigidbody>());
 
             instantiatedPrefab = null;
-        } else if ((townHalls.Count <= 0 || (instantiatedPrefab.tag == "TownHall" && townHalls.Count <= 1)) && Input.GetButtonUp("Fire1")) { //When placed ouside a townhall radius
+        } else if ((townHalls.Count <= 0 || (instantiatedPrefab.tag == "TownHall" && townHalls.Count <= 1) || currentOccupanceReference.isOverlapping) && 
+            Input.GetButtonUp("Fire1")) { //When placed ouside a townhall radius
+            Debug.Log("Destroyed");
             Destroy(instantiatedPrefab);
             instantiatedPrefab = null;
         }
@@ -128,7 +144,7 @@ public class ObjectPlacer : ObjectSelecter {
             prefab = chosenObject;
         else if (chosenObject.tag == "TownHall" && (stats.wood >= stats.townhallWoodCost && stats.gem >= stats.townhallGemCost) || chosenObject.tag == "TownHall" && stats.townhallStarter)
             prefab = chosenObject;
-        else
+        else if (canInstantiateObject)
         {
             canInstantiateObject = false;
             if (doOnce)

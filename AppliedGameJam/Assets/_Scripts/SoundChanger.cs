@@ -10,29 +10,37 @@ public class SoundChanger : MonoBehaviour {
     public AudioClip[] ice;
     public AudioClip[] space;
     public int biome;
-    public int happyness = 2;
+    public int happiness = 2;
     public float audioTrackTime;
     private int playingAudioSource;
     public float fadeSpeed = 1f;
     public float maxVolume;
+    public Stats stats;
 	// Use this for initialization
 	void Start () {
     }
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (stats.co2 < stats.happiness) {
+            happiness = Mathf.RoundToInt(stats.co2 / 20 - 1);
+        } else if (stats.happiness < stats.co2) {
+            happiness = Mathf.RoundToInt(stats.happiness / 20 - 1);
+        }
+
         switch (biome) {
             case 1:
-            SwitchAudio(woods, happyness);
+            SwitchAudio(woods, happiness);
             break;
             case 2:
-            SwitchAudio(desert, happyness);
+            SwitchAudio(desert, happiness);
             break;
             case 3:
-            SwitchAudio(ice, happyness);
+            SwitchAudio(ice, happiness);
             break;
             case 0:
-            SwitchAudio(space, happyness);
+            SwitchAudio(space, happiness);
             break;
         }
 

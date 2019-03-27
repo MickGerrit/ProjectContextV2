@@ -119,7 +119,7 @@ public class Character : MonoBehaviour
 
         //Debug.Log(WallCheck());
         // Does the ray intersect any objects ex\cluding the player layer
-        if (WallCheck() && !jump) {
+        if ((WallCheck() || WaterCheck()) && !jump ) {
             HitWall();
             Vector3 newDir;
             newDir = Vector3.Reflect(velocity, fHit.normal);
@@ -132,6 +132,16 @@ public class Character : MonoBehaviour
         CharacterAnimator.SetBool("Walking", false);
         //transform.position -= transform.forward * 0.01f
         jump = true;
+    }
+
+    private bool WaterCheck() {
+        RaycastHit waterHit;
+        if (Physics.Raycast(transform.position + transform.forward * 10, transform.TransformDirection(Vector3.down), out waterHit, Mathf.Infinity, layerMask)) {
+            if (waterHit.transform.gameObject.tag == "Water") {
+                return true;
+            } else return false;
+        }
+        return false;
     }
 
     private bool WallCheck() {

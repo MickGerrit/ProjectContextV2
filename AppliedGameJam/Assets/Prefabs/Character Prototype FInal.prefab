@@ -1649,7 +1649,7 @@ MonoBehaviour:
   speed: 0.8
   layerMask:
     serializedVersion: 2
-    m_Bits: 4119809
+    m_Bits: 4119825
   rayInbetweenOffset: 0.3
   rayXPosition: 0.5
   sideRayLength: 0.01
